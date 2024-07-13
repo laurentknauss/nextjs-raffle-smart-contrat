@@ -22,6 +22,7 @@ export default function Header() {
                 <Image
                 loader={customLoader} 
                 src="/chainlink.png"
+                alt="chainlink"
                 width={300} 
                 height={300}                
                 priority
