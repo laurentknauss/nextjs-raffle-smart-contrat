@@ -148,13 +148,14 @@ export default function LotteryEntrance() {
                     
                     <p className="py-4 px-4 font-bold text-3xl">
                     Entrance Fee: {ethers.utils.formatUnits(entranceFee, "ether")} ETH<br />
+                    
+                    Current number of players is {numberOfPlayers}  <br />
                     <br />
-                    The current number of players is {numberOfPlayers} ! <br />
-                    <br />
-                    The wallet address of our most previous winner was  {`"${recentWinner}"`} ! 
+                    Our previous winner was  {`${recentWinner}`} ! 
                     <br /> 
-                    The smart contract for this web3 raffle was deployed on <br />
-                    Avalanche fuji at this address : {`"0xFD01b2F49118FE7E53bcee970CB001f5f25F8158"`}
+                    The smart contract for this web3 raffle was deployed on 
+                    Avalanche fuji at this address:<br />
+                     {`0xFD01b2F49118FE7E53bcee970CB001f5f25F8158`}
 
                     </p>
                     
