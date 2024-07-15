@@ -155,7 +155,7 @@ export default function LotteryEntrance() {
                     <br /> 
                     The smart contract for this web3 raffle was deployed on 
                     Avalanche fuji at this address:<br />
-                     {`0xFD01b2F49118FE7E53bcee970CB001f5f25F8158`}
+                     {`0x96adA17a0ECBB1b935ba0e421751E1a64A64b1D3`}
 
                     </p>
                     
