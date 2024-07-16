@@ -16,9 +16,10 @@ const customLoader = ({ src, width, quality }) => {
 
 export default function Header() {
     return (
-            <navClass>
-            <h1 className="py-4 px-4 font-bold text-7xl"> Decentralized Raffle</h1>
-            <div className={`${styles.imageContainer} flex justify-center items-center`}>
+            <nav className="flex flex-col md:flex-row items-center justify-between p-4">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-0">
+                 Decentralized Raffle</h1>
+            <div className={`${styles.imageContainer} w-full md:w-auto flex justify-center items-center mb-4 md:mb-0`}>
                 <Image
                 loader={customLoader} 
                 src="/chainlink.png"
@@ -30,9 +31,9 @@ export default function Header() {
                 </div>
 
 
-            <div className="ml-auto py-2 px-4">
+            <div className="w-full md:w-auto flex justify-center md:justify-end">
                 <ConnectButton moralisAuth={false}/>
             </div>
-        </navClass>
+        </nav>
     )
 }

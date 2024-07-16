@@ -115,7 +115,7 @@ export default function LotteryEntrance() {
     }
 
     return (
-        <div className="flex justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center  min-h-screen">
             
         <div className="p-5 text-center" >
             <h1 className="py-4 px-4 font-bold text-5xl">
