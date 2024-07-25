@@ -169,7 +169,7 @@ export default function LotteryEntrance() {
                 <>
                 {raffleState ==="1"?(
                     <div className="flex flex-col items-center text-white">
-                        <FaHourglassHalf size={80} className="animate-spin bg-blue-500 "/>
+                        <FaHourglassHalf size={80} className="animate-spin bg-transparent"/>
                         <p className="text-[#fffaff] text-center font bold py-4 px-4 text-2xl"> The dApp is calculating the winner right now , please wait a few moments...</p> 
                         </div> 
                 ):( 
