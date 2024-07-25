@@ -5,6 +5,7 @@ import { contractAddresses, abi } from "../constants"
 // dont export from moralis when using react
 import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useEffect, useState } from "react"
+import { FaHourglassHalf } from 'react-icons/fa';
 import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
 
@@ -22,6 +23,7 @@ export default function LotteryEntrance() {
     const [entranceFee, setEntranceFee] = useState("0")
     const [numberOfPlayers, setNumberOfPlayers] = useState("0")
     const [recentWinner, setRecentWinner] = useState("0")
+    const [raffleState, setRaffleState] = useState("0")
 
     const dispatch = useNotification()
 
@@ -38,14 +40,13 @@ export default function LotteryEntrance() {
         params: {},
     })
 
-    /* View Functions */
-    /*
-    const { runcontractfunction : getRafflestate } = useWeb3Contract({
+       
+    const { runContractFunction : getRaffleState } = useWeb3Contract({
         abi: abi,
         contractAddress: raffleAddress, 
         functionName: "getRaffleState",
         params: {},
-    }) */
+    }) 
 
 
     const { runContractFunction: getEntranceFee } = useWeb3Contract({
@@ -78,9 +79,11 @@ export default function LotteryEntrance() {
         // })
         const entranceFeeFromCall = (await getEntranceFee()).toString()
         const numPlayersFromCall = (await getPlayersNumber()).toString()
+        const raffleStateFromCall = (await getRaffleState()).toString()
         const recentWinnerFromCall = await getRecentWinner()
         setEntranceFee(entranceFeeFromCall)
         setNumberOfPlayers(numPlayersFromCall)
+        setRaffleState(raffleStateFromCall)
         setRecentWinner(recentWinnerFromCall)
     }
 
@@ -139,6 +142,17 @@ export default function LotteryEntrance() {
 
             {raffleAddress ? (
                 <>
+                {raffleState ==="1"?(
+                    <div className="flex flex-col items-center text-white">
+                        <FaHourglassHalf size={50} className="animate-spin bg-blue-500"/>
+                        <p>Raffle is calculating the winner right now , please wait a few moments...</p> 
+                        </div> 
+                ):( 
+                <div> 
+                    <p className="text-[#1877f2] text-center font-bold  py-4 px-4  text-2xl">OPEN   
+                        <br /> 
+                        <br /> 
+                     </p>
                     
                     <button className="flex justify-center  items-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto"
                            onClick={async () =>
@@ -160,18 +174,23 @@ export default function LotteryEntrance() {
                         )}
                     </button>
                     
-                    <div className="text-[#fffaff] py-4 px-4 font-bold text-3xl"> 
+                    <div className="text-[#fffaff] py-4 px-4 font-bold text-2xl"> 
                         <br /> 
                       <br />                    
-                    <div className="number-frame">
-                    Current number of players  {numberOfPlayers} <br /> 
+                    <div className="justify-center  text-center">
+                    Current number of players <br /> 
+                      [ {numberOfPlayers} ] <br /> 
                     
                     <br /> 
-                    <span>
-                    Previous winner {recentWinner}  <br />  
-                    </span> 
-                 </div>
-            </div>        
+                    <span className="justify-center flex text-center "> 
+                    Previous winner<br />
+                     {recentWinner} 
+                    <br />  
+                  </span> 
+               </div>
+            </div>
+         </div>        
+       )}
          </>
             ) : (
                 <div>Please connect to a supported chain </div>
