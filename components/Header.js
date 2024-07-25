@@ -6,8 +6,8 @@ import React, {useState, useEffect}  from 'react';
 
 
 // Define a custom loader function for images
-const customLoader = ({ src, width, quality }) => {
-    return `${src}?w=${width}&q=${quality || 75}`;
+const customLoader = ({ src  }) => {
+    return src ;
   };
 
 
@@ -43,7 +43,7 @@ export default function Header() {
 
 
        <div className="w-full md:w-auto flex flex-col items-center md:items-end">
-        <div className="text-3xl md:texttext-4xl lg:text-6xl font-bold mb-4 md:mb-0"
+        <div className="text-3xl md:text text-4xl lg:text-6xl font-bold mb-4 md:mb-0"
          style={{ 
           visibility: isVisible ? 'visible' : 'hidden',
           color: '#fffaff', 
@@ -52,13 +52,16 @@ export default function Header() {
           marginTop: '120px'
         }}
         >
-           A ramdom winner picked every 10 minutes 
+           A random winner picked every 10 minutes 
         </div>
         </div>
         </nav> 
 
         <div className="w-full flex justify-center mt-8">    
-                <ConnectButton moralisAuth={false}/>
+                <ConnectButton 
+                moralisAuth={false}
+                
+                />
                 </div> 
             </>
         

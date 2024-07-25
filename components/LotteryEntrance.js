@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { FaHourglassHalf } from 'react-icons/fa';
 import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
+import { RiAtFill } from 'react-icons/ri';
 
 
 
@@ -24,6 +25,7 @@ export default function LotteryEntrance() {
     const [numberOfPlayers, setNumberOfPlayers] = useState("0")
     const [recentWinner, setRecentWinner] = useState("0")
     const [raffleState, setRaffleState] = useState("0")
+    const [loading, setLoading] = useState("0") 
 
     const dispatch = useNotification()
 
@@ -92,18 +94,41 @@ export default function LotteryEntrance() {
             updateUIValues()
         }
     }, [isWeb3Enabled])
-    // no list means it'll update everytime anything changes or happens
-    // empty list means it'll run once after the initial rendering
-    // and dependencies mean it'll run whenever those things in the list change
+    
+    // Listening for the RaffleEnter event 
+    useEffect( ()=> {
 
-    // An example filter for listening for events, we will learn more on this next Front end lesson
-    // const filter = {
-    //     address: raffleAddress,
-    //     topics: [
-    //         // the name of the event, parnetheses containing the data type of each event, no spaces
-    //         utils.id("RaffleEnter(address)"),
-    //     ],
-    // }
+        //if (isWeb3Enabled
+          if (raffleAddress) { 
+            const provider = new ethers.providers.Web3Provider(window.ethereum) 
+            const raffleContract = new ethers.Contract(raffleAddress, abi, provider) 
+
+
+            const onRequestedRaffleWinner = async(requestId) => {
+                console.log("Randomly picking the winner, RequestID:", requestId) 
+                // Set Loading if raffling process started 
+                setLoading(true) 
+                await updateUIValues() 
+            }
+
+            const onWinnerPicked = async  (winner)=>  {
+                console.log("Winner picked : ", winner)  
+                // Stop loading when winner picked 
+                setLoading(false) 
+                await updateUIValues() 
+            }
+
+            raffleContract.on("RequestedRaffleWinner", onRequestedRaffleWinner) 
+            raffleContract.on("WinnerPicked", onWinnerPicked) 
+
+            return () => { 
+                raffleContract.off("RaffleEnter", onRequestedRaffleWinner)  
+                raffleContract.off("WinnerPicked", onWinnerPicked) 
+
+            }
+        }
+    }, [raffleAddress])  
+    
 
     const handleNewNotification = () => {
         dispatch({
@@ -144,8 +169,8 @@ export default function LotteryEntrance() {
                 <>
                 {raffleState ==="1"?(
                     <div className="flex flex-col items-center text-white">
-                        <FaHourglassHalf size={50} className="animate-spin bg-blue-500"/>
-                        <p>Raffle is calculating the winner right now , please wait a few moments...</p> 
+                        <FaHourglassHalf size={80} className="animate-spin bg-blue-500 "/>
+                        <p className="text-[#fffaff] text-center font bold py-4 px-4 text-2xl"> The dApp is calculating the winner right now , please wait a few moments...</p> 
                         </div> 
                 ):( 
                 <div> 
@@ -166,7 +191,7 @@ export default function LotteryEntrance() {
                         disabled={isLoading || isFetching}
                     >
                         {isLoading || isFetching ? (
-                            <div className="h-8 w-8 border-b-2 rounded-full"></div>
+                            <div className="h-8 w-8 border-b-2 rounded-full loader"></div>
                         ) : (
                             <p> 
                             Enter the Lottery for only{''} {ethers.utils.formatUnits(entranceFee, "ether")} ETH 
