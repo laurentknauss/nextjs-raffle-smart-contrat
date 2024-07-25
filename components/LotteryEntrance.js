@@ -39,6 +39,14 @@ export default function LotteryEntrance() {
     })
 
     /* View Functions */
+    /*
+    const { runcontractfunction : getRafflestate } = useWeb3Contract({
+        abi: abi,
+        contractAddress: raffleAddress, 
+        functionName: "getRaffleState",
+        params: {},
+    }) */
+
 
     const { runContractFunction: getEntranceFee } = useWeb3Contract({
         abi: abi,
@@ -115,21 +123,25 @@ export default function LotteryEntrance() {
     }
 
     return (
-        <div className="flex justify-center items-center  min-h-screen">
+        <div className={styles.container}>            
             
-        <div className="p-5 text-center" >
-            <h1 className="py-4 px-4 font-bold text-5xl">
-                Tamper-proof &        
-                 Powered by<br /> 
-                 Chainlink VRF & Chainlink Automation
+                <h1 className={styles.heading}> 
+                <br />         
+                 Powered by
+                 <br /> 
+                 Chainlink
+                  <br /> 
+                 VRF & Automation
+                  <br />
             </h1>
+            <br /> 
+            <br /> 
 
             {raffleAddress ? (
                 <>
                     
-                    <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded text-2xl my-4"
-                        onClick={async () =>
+                    <button className="flex justify-center  items-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto"
+                           onClick={async () =>
                             await enterRaffle({
                                 // onComplete:
                                 // onError:
@@ -140,31 +152,31 @@ export default function LotteryEntrance() {
                         disabled={isLoading || isFetching}
                     >
                         {isLoading || isFetching ? (
-                            <div className="animate-spin spinner-border h-9 w-9 border-b-5 rounded-full"></div>
+                            <div className="h-8 w-8 border-b-2 rounded-full"></div>
                         ) : (
-                            "Enter the Raffle ! "
+                            <p> 
+                            Enter the Lottery for only{''} {ethers.utils.formatUnits(entranceFee, "ether")} ETH 
+                            </p>
                         )}
                     </button>
                     
-                    <p className="py-4 px-4 font-bold text-3xl">
-                    Entrance Fee: {ethers.utils.formatUnits(entranceFee, "ether")} ETH<br />
+                    <div className="text-[#fffaff] py-4 px-4 font-bold text-3xl"> 
+                        <br /> 
+                      <br />                    
+                    <div className="number-frame">
+                    Current number of players  {numberOfPlayers} <br /> 
                     
-                    Current number of players is {numberOfPlayers}  <br />
-                    <br />
-                    Our previous winner was  {`${recentWinner}`} ! 
                     <br /> 
-                    The smart contract for this web3 raffle was deployed on 
-                    Avalanche fuji at this address:<br />
-                     {`0x96adA17a0ECBB1b935ba0e421751E1a64A64b1D3`}
-
-                    </p>
-                    
-                </>
+                    <span>
+                    Previous winner {recentWinner}  <br />  
+                    </span> 
+                 </div>
+            </div>        
+         </>
             ) : (
                 <div>Please connect to a supported chain </div>
             )}
         </div>
-        </div>
-    )
-
+    
+  );
 }
