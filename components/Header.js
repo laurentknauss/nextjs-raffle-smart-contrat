@@ -1,7 +1,7 @@
 
 import Image from 'next/image'; 
 import styles from '../styles/Home.module.css'; 
-import { ConnectButton } from "web3uikit"
+import { ConnectButton } from "web3uikit";
 import React, {useState, useEffect}  from 'react'; 
 
 

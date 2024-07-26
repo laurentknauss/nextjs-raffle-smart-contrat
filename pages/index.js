@@ -4,8 +4,10 @@ import Header from "../components/Header";
 import LotteryEntrance from "../components/LotteryEntrance";
 import { useMoralis } from "react-moralis";
 
-const supportedChains = ["43113"]
+const FujiSupportedChain = ["43113"] 
+const SepoliaSupportedChain = ["11155111"]
 
+const supportedChains = [...FujiSupportedChain, ...SepoliaSupportedChain];
 export default function Home() {
   const { isWeb3Enabled, chainId } = useMoralis();
 
@@ -24,8 +26,11 @@ export default function Home() {
               <LotteryEntrance className="p-8" />
             </div>
           ) : (
-            <div>{`Please switch to a supported chain ! 
-               The supported Chain is Avalanche Testnet , Id ${supportedChains}`}</div>
+            <div className="text-[#ffaaf] text-center font-bold  py-4 px-4  text-2xl">
+                        <br /> {`Please switch to a supported chain !`} <br />
+               The supported chains  are Avalanche Testnet & Sepolia ETH : <br /> 
+                 Id {FujiSupportedChain.join(",")} and  Id {SepoliaSupportedChain.join(",")}
+                  </div> 
           )}
         </div>
       ) : (
