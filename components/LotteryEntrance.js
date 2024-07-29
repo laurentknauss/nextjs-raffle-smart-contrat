@@ -8,8 +8,6 @@ import { useEffect, useState } from "react"
 import { FaHourglassHalf } from 'react-icons/fa';
 import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
-import { RiAtFill } from 'react-icons/ri';
-
 
 
 export default function LotteryEntrance() {
@@ -25,6 +23,7 @@ export default function LotteryEntrance() {
     const [numberOfPlayers, setNumberOfPlayers] = useState("0")
     const [recentWinner, setRecentWinner] = useState("0")
     const [raffleState, setRaffleState] = useState("0")
+    const [ contractAddress, setContractAddress] = useState("0") 
     const [loading, setLoading] = useState("0") 
 
     const dispatch = useNotification()
@@ -42,7 +41,14 @@ export default function LotteryEntrance() {
         params: {},
     })
 
-       
+    const { runContractFunction: getContractAddress } = useWeb3Contract({
+        abi:abi,
+        contractAddress: raffleAddress,
+        functionName: "getContractAddress",
+        
+        params: {},
+    })
+
     const { runContractFunction : getRaffleState } = useWeb3Contract({
         abi: abi,
         contractAddress: raffleAddress, 
@@ -82,10 +88,12 @@ export default function LotteryEntrance() {
         const entranceFeeFromCall = (await getEntranceFee()).toString()
         const numPlayersFromCall = (await getPlayersNumber()).toString()
         const raffleStateFromCall = (await getRaffleState()).toString()
+        const contractAddressFromCall = await getContractAddress()
         const recentWinnerFromCall = await getRecentWinner()
         setEntranceFee(entranceFeeFromCall)
         setNumberOfPlayers(numPlayersFromCall)
         setRaffleState(raffleStateFromCall)
+        setContractAddress(contractAddressFromCall)
         setRecentWinner(recentWinnerFromCall)
     }
 
@@ -207,9 +215,13 @@ export default function LotteryEntrance() {
                       [ {numberOfPlayers} ] <br /> 
                     
                     <br /> 
-                    <span className="justify-center flex text-center "> 
-                    Previous winner<br />
-                     {recentWinner} 
+                    <span className="justify-center flex flex-col text-center py-16 ">
+                    <p className="text-[#fffaff] text-sm">Previous winner  <br />  
+                         {recentWinner} </p>  <br />
+                     <span className="justify-center flex text-center py-16"> 
+                     <p className="text-[#fffaff] text-sm"> smart contract address of the Raffle <br /> 
+                         {contractAddress} </p>
+                     </span>
                     <br />  
                   </span> 
                </div>
